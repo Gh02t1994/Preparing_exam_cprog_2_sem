@@ -1,3 +1,7 @@
+/*
+gcc -std=c99 -Wall -Wextra -Wpedantic -Werror -Wvla _task.c -lm -o app.exe
+*/
+
 #include <stdio.h>
 
 #define MAX_LEN_STR 256
