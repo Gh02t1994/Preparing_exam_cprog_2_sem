@@ -1,5 +1,5 @@
 /*
-gcc -std=c99 -Wall -Wextra -Wpedantic -Werror -Wvla 1_2_task.c -lm -o app.exe
+gcc -std=c99 -Wall -Wextra -Wpedantic -Werror -Wvla _task.c -lm -o app.exe
 */
 
 #include <stdio.h>
