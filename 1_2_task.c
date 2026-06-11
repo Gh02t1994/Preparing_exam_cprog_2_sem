@@ -27,6 +27,19 @@ int input(char str[])
     return SUCCESS;
 }
 
+int is_marks(char sym)
+{
+    char mark[] = " .,:;";
+    
+    for (size_t i = 0; mark[i] != '\0'; i++)
+    {
+        if (sym == mark[i])
+            return 1;
+    }
+
+    return 0;
+}
+
 int is_number(char str[])
 {
     size_t len = strlen(str);
@@ -43,10 +56,16 @@ int is_number(char str[])
 int check_all_words(char str[], int numbers[], size_t *count_numbers)
 {
     size_t pos = 0;
+    char temp[MAX_LEN_WORD];
     *count_numbers = 0;
 
     while (str[pos] != '\0')
     {
+        while (str[pos] != '\0' && is_marks(str[pos]) == 1)
+        {
+            pos++;
+        }
+
         size_t start = pos;
 
         while (str[pos] != '\0' && is_marks(str[pos]) != 1)
@@ -55,15 +74,16 @@ int check_all_words(char str[], int numbers[], size_t *count_numbers)
         }
 
         size_t len_word = pos - start;
-        
-        for (size_t i = 0; i < size; i++)
+        strncpy(temp, str + start, len_word);
+        temp[len_word] = '\0';
+
+        if (is_number(temp) != ERROR)
         {
-            if (is_number(words[i]) != ERROR)
-            {
-                numbers[*count_numbers] = atoi(words[i]);
-                (*count_numbers)++;
-            }
+            numbers[*count_numbers] = atoi(temp);
+            (*count_numbers)++;
         }
+
+        pos++;
     }
 
     if (*count_numbers == 0)
@@ -84,19 +104,6 @@ void search_min_max(int numbers[], size_t count, int *min, int *max)
         if (numbers[i] > *max)
             *max = numbers[i];
     }
-}
-
-int is_marks(char sym)
-{
-    char mark[] = " .,:;";
-    
-    for (size_t i = 0; mark[i] != '\0'; i++)
-    {
-        if (sym == mark[i])
-            return 1;
-    }
-
-    return 0;
 }
 
 void vstabka_sub(char str[], char new_str[], char sub_search[], char sub_in[])
@@ -160,9 +167,9 @@ void make_new_str(char str[], int min, int max, char new_str[])
 
 int main(void)
 {
-    char str[MAX_LEN_STR], words[MAX_COUNT_WORDS][MAX_LEN_WORD], new_str[MAX_LEN_STR];
+    char str[MAX_LEN_STR], new_str[MAX_LEN_STR];
     int numbers[MAX_COUNT_WORDS];
-    size_t size, count_numbers;
+    size_t count_numbers;
     int min, max;
     int rc;
 
@@ -173,11 +180,7 @@ int main(void)
     char source[MAX_LEN_STR];
     strcpy(source, str);
 
-    rc = take_arr_words(str, words, &size);
-    if (rc != SUCCESS)
-        return ERROR;
-
-    rc = check_all_words(words, numbers, size, &count_numbers);
+    rc = check_all_words(str, numbers, &count_numbers);
     if (rc != SUCCESS)
         return ERROR;
     
