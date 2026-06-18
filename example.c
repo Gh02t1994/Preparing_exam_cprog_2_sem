@@ -19,6 +19,12 @@ source ~/.bashrc
 #define MAX_NAME_POINT 3
 #define MAX_COUNT_WORDS 128
 
+#define MARKS " .,:;"
+
+#define ERROR 1
+#define SUCCESS 0
+
+
 int main(void)
 {
     
